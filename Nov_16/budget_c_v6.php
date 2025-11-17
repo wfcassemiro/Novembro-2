@@ -159,6 +159,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     require_once __DIR__ . '/../vendor/autoload.php';
     
     $contactName = trim($_POST['contact_name'] ?? '');
+    $companyName = trim($_POST['company_name'] ?? '');
     $deliveryDate = trim($_POST['delivery_date'] ?? '');
     $validityDate = trim($_POST['validity_date'] ?? '');
     $finalPrice = parseBRLFloat($_POST['final_price'] ?? '0');
@@ -166,8 +167,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     
     $clientName = $_SESSION['budget_client']['client_name'] ?? 'Cliente';
     $currency = $_SESSION['budget_client']['currency'] ?? 'BRL';
+    $langFrom = $_SESSION['budget_client']['lang_from'] ?? '';
+    $langTo = $_SESSION['budget_client']['lang_to'] ?? '';
     
-    // Criar PDF usando TCPDF
+    // Criar PDF usando TCPDF com UTF-8
     $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
     
     $pdf->SetCreator('Dash-T101');
@@ -179,15 +182,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $pdf->setPrintFooter(false);
     
     $pdf->SetMargins(20, 20, 20);
-    $pdf->SetAutoPageBreak(true, 20);
+    $pdf->SetAutoPageBreak(true, 25);
     
     $pdf->AddPage();
     
     $pdf->SetFont('helvetica', 'B', 24);
     $pdf->SetTextColor(74, 20, 140);
-    $pdf->Cell(0, 15, 'ORÇAMENTO', 0, 1, 'C');
+    $pdf->Cell(0, 15, 'Orçamento', 0, 1, 'C');
     
     $pdf->Ln(5);
+    
+    // Empresa geradora
+    if (!empty($companyName)) {
+        $pdf->SetFont('helvetica', 'B', 14);
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->Cell(0, 8, 'Empresa:', 0, 1);
+        
+        $pdf->SetFont('helvetica', '', 12);
+        $pdf->SetTextColor(60, 60, 60);
+        $pdf->Cell(0, 6, $companyName, 0, 1);
+        
+        $pdf->Ln(5);
+    }
     
     // Informações do Cliente
     $pdf->SetFont('helvetica', 'B', 14);
@@ -207,31 +223,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     // Datas
     $pdf->SetFont('helvetica', 'B', 12);
     $pdf->SetTextColor(0, 0, 0);
-    $pdf->Cell(90, 6, 'Prazo de Entrega:', 0, 0);
+    $pdf->Cell(90, 6, 'Prazo de entrega:', 0, 0);
     $pdf->SetFont('helvetica', '', 12);
     $pdf->SetTextColor(60, 60, 60);
     $pdf->Cell(0, 6, $deliveryDate, 0, 1);
     
     $pdf->SetFont('helvetica', 'B', 12);
     $pdf->SetTextColor(0, 0, 0);
-    $pdf->Cell(90, 6, 'Validade do Orçamento:', 0, 0);
+    $pdf->Cell(90, 6, 'Validade do orçamento:', 0, 0);
     $pdf->SetFont('helvetica', '', 12);
     $pdf->SetTextColor(60, 60, 60);
     $pdf->Cell(0, 6, $validityDate, 0, 1);
+    
+    // Data de geração
+    $pdf->SetFont('helvetica', 'B', 12);
+    $pdf->SetTextColor(0, 0, 0);
+    $pdf->Cell(90, 6, 'Orçamento gerado em:', 0, 0);
+    $pdf->SetFont('helvetica', '', 12);
+    $pdf->SetTextColor(60, 60, 60);
+    $pdf->Cell(0, 6, date('d-m-Y'), 0, 1);
     
     $pdf->Ln(10);
     
     // Arquivos
     $pdf->SetFont('helvetica', 'B', 14);
     $pdf->SetTextColor(0, 0, 0);
-    $pdf->Cell(0, 8, 'Arquivos para Tradução:', 0, 1);
+    $pdf->Cell(0, 8, 'Arquivos para tradução:', 0, 1);
+    
+    // Idiomas
+    if (!empty($langFrom) && !empty($langTo)) {
+        $pdf->SetFont('helvetica', 'I', 11);
+        $pdf->SetTextColor(80, 80, 80);
+        $pdf->Cell(0, 6, 'Idioma de origem: ' . strtoupper($langFrom) . ' → Idioma de chegada: ' . strtoupper($langTo), 0, 1);
+        $pdf->Ln(3);
+    }
     
     $pdf->SetFont('helvetica', '', 11);
     $pdf->SetTextColor(60, 60, 60);
     
     foreach ($selectedFiles as $file) {
         $pdf->Cell(10, 6, '•', 0, 0);
-        $pdf->Cell(0, 6, htmlspecialchars($file), 0, 1);
+        $pdf->Cell(0, 6, $file, 0, 1);
     }
     
     $pdf->Ln(10);
@@ -240,7 +272,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $pdf->SetFillColor(244, 244, 244);
     $pdf->SetFont('helvetica', 'B', 16);
     $pdf->SetTextColor(34, 197, 94);
-    $pdf->Cell(0, 12, 'VALOR TOTAL: ' . $currency . ' ' . number_format($finalPrice, 2, ',', '.'), 0, 1, 'C', true);
+    $pdf->Cell(0, 12, 'Valor total: ' . $currency . ' ' . number_format($finalPrice, 2, ',', '.'), 0, 1, 'C', true);
     
     $pdf->Ln(15);
     
@@ -249,8 +281,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $pdf->SetTextColor(120, 120, 120);
     $pdf->MultiCell(0, 5, 'Este orçamento é válido até a data especificada. Após a aprovação, iniciaremos o trabalho conforme o prazo acordado.', 0, 'L');
     
-    // Output
-    $filename = 'Orçamento — ' . $clientName . '.pdf';
+    // Rodapé
+    $pdf->Ln(5);
+    $pdf->SetFont('helvetica', '', 8);
+    $pdf->SetTextColor(150, 150, 150);
+    $pdf->Cell(0, 5, 'Orçamento gerado pelo Dash-T101, da Translators101', 0, 1, 'C');
+    
+    // Output com nome UTF-8
+    $filename = 'Orcamento - ' . $clientName . '.pdf';
     $pdf->Output($filename, 'D');
     exit;
 }
