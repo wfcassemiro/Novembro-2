@@ -638,12 +638,17 @@ include __DIR__ . '/../vision/includes/sidebar.php';
 ?>
 
 <style>
-.main-content { padding-bottom: 100px; }
+.main-content { 
+    padding-bottom: 100px; 
+    padding-top: 30px;
+    transition: margin-left 0.3s ease;
+}
 
 .profile-header-card {
     background: #7B2B9F;
     border: none;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
+    margin-top: 20px;
     display: flex;
     align-items: center;
     padding: 20px 30px;
@@ -659,6 +664,7 @@ include __DIR__ . '/../vision/includes/sidebar.php';
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    align-self: center;
 }
 
 .profile-header-card .header-icon-container i {
@@ -668,6 +674,9 @@ include __DIR__ . '/../vision/includes/sidebar.php';
 
 .profile-header-card .header-text-container {
     margin-left: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .profile-header-card .header-text-container h2 {
@@ -677,6 +686,7 @@ include __DIR__ . '/../vision/includes/sidebar.php';
     color: #fff;
     font-weight: 700;
     border: none;
+    line-height: 1.3;
 }
 
 .profile-header-card .header-text-container p {
@@ -684,6 +694,7 @@ include __DIR__ . '/../vision/includes/sidebar.php';
     color: rgba(255, 255, 255, 0.85);
     font-size: 1rem;
     font-weight: 400;
+    line-height: 1.4;
 }
 
 .report-nav-buttons { display: flex; gap: 15px; margin-bottom: 20px; }
