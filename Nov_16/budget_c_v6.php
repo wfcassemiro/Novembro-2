@@ -1,6 +1,6 @@
 <?php
-// /app/Nov_16/budget_c_v6.php
-// Versão 6 - Remover arquivos + Modal PDF
+// /app/Nov_16/budget_c_v7.php
+// Versão 7 - Ajustes no PDF e tarja roxa
 
 session_start();
 
