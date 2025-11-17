@@ -641,20 +641,20 @@ include __DIR__ . '/../vision/includes/sidebar.php';
 .main-content { padding-bottom: 100px; }
 
 .profile-header-card {
-    background: linear-gradient(135deg, var(--brand-purple), #4a148c);
+    background: #7B2B9F;
     border: none;
     margin-bottom: 25px;
     display: flex;
     align-items: center;
-    padding: 20px;
-    border-radius: 12px;
+    padding: 20px 30px;
+    border-radius: 16px;
 }
 
 .profile-header-card .header-icon-container {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15);
     border-radius: 50%;
-    width: 60px;
-    height: 60px;
+    width: 65px;
+    height: 65px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -662,27 +662,28 @@ include __DIR__ . '/../vision/includes/sidebar.php';
 }
 
 .profile-header-card .header-icon-container i {
-    font-size: 1.8rem;
+    font-size: 2rem;
     color: #fff;
 }
 
 .profile-header-card .header-text-container {
-    margin-left: 20px;
+    margin-left: 25px;
 }
 
 .profile-header-card .header-text-container h2 {
-    margin: 0 0 5px 0;
+    margin: 0 0 6px 0;
     padding: 0;
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     color: #fff;
-    font-weight: 600;
+    font-weight: 700;
     border: none;
 }
 
 .profile-header-card .header-text-container p {
     margin: 0;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.85);
     font-size: 1rem;
+    font-weight: 400;
 }
 
 .report-nav-buttons { display: flex; gap: 15px; margin-bottom: 20px; }
