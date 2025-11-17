@@ -1502,18 +1502,23 @@ include __DIR__ . '/../vision/includes/sidebar.php';
             <input type="hidden" name="action" value="generate_pdf">
             
             <div class="form-group">
+                <label for="company_name">Nome da empresa geradora:</label>
+                <input type="text" id="company_name" name="company_name" required class="vision-input" placeholder="Ex: Translators101">
+            </div>
+            
+            <div class="form-group">
                 <label for="contact_name">Nome do contato:</label>
                 <input type="text" id="contact_name" name="contact_name" required class="vision-input" placeholder="Ex: João Silva">
             </div>
             
             <div class="form-group">
-                <label for="delivery_date">Prazo de entrega:</label>
-                <input type="date" id="delivery_date" name="delivery_date" required class="vision-input">
+                <label for="delivery_date">Prazo de entrega (DD-MM-AAAA):</label>
+                <input type="text" id="delivery_date" name="delivery_date" required class="vision-input" placeholder="DD-MM-AAAA" pattern="\d{2}-\d{2}-\d{4}">
             </div>
             
             <div class="form-group">
-                <label for="validity_date">Validade do orçamento:</label>
-                <input type="date" id="validity_date" name="validity_date" required class="vision-input">
+                <label for="validity_date">Validade do orçamento (DD-MM-AAAA):</label>
+                <input type="text" id="validity_date" name="validity_date" required class="vision-input" placeholder="DD-MM-AAAA" pattern="\d{2}-\d{2}-\d{4}">
             </div>
             
             <div class="form-group">
