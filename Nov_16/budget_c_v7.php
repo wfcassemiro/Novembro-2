@@ -245,6 +245,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $pdf->SetTextColor(60, 60, 60);
     $pdf->Cell(0, 6, date('d-m-Y'), 0, 1);
     
+    $pdf->Ln(5);
+    
+    // Forma de pagamento
+    if (!empty($paymentMethod)) {
+        $pdf->SetFont('helvetica', 'B', 12);
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->Cell(90, 6, 'Forma de pagamento:', 0, 0);
+        $pdf->SetFont('helvetica', '', 12);
+        $pdf->SetTextColor(60, 60, 60);
+        $pdf->Cell(0, 6, $paymentMethod, 0, 1);
+    }
+    
+    // Data de pagamento
+    if (!empty($paymentDate)) {
+        $pdf->SetFont('helvetica', 'B', 12);
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->Cell(90, 6, 'Data de pagamento:', 0, 0);
+        $pdf->SetFont('helvetica', '', 12);
+        $pdf->SetTextColor(60, 60, 60);
+        $pdf->Cell(0, 6, $paymentDate, 0, 1);
+    }
+    
     $pdf->Ln(10);
     
     // Arquivos
