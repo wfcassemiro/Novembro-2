@@ -579,6 +579,42 @@ function selectAllUsers(select) {
     });
 }
 
+// Validar e confirmar envio
+function validateAndConfirm() {
+    const recipientType = document.getElementById('recipient_type').value;
+    const externalEmails = document.getElementById('external_emails').value.trim();
+    
+    // Se for seleção individual, verificar se há usuários selecionados
+    if (recipientType === 'selected') {
+        const selectedUsers = document.querySelectorAll('input[name="selected_users[]"]:checked');
+        if (selectedUsers.length === 0 && externalEmails === '') {
+            alert('Por favor, selecione pelo menos um usuário ou adicione emails externos.');
+            return false;
+        }
+        
+        let message = 'Você está prestes a enviar email para:\n\n';
+        if (selectedUsers.length > 0) {
+            message += '• ' + selectedUsers.length + ' usuário(s) selecionado(s)\n';
+        }
+        if (externalEmails !== '') {
+            const emailCount = externalEmails.split(',').length;
+            message += '• ' + emailCount + ' email(s) externo(s)\n';
+        }
+        message += '\nDeseja continuar?';
+        
+        return confirm(message);
+    }
+    
+    // Para grupos predefinidos
+    let message = 'Tem certeza que deseja enviar este e-mail?';
+    if (externalEmails !== '') {
+        const emailCount = externalEmails.split(',').length;
+        message = 'Você está prestes a enviar para o grupo selecionado + ' + emailCount + ' email(s) externo(s).\n\nDeseja continuar?';
+    }
+    
+    return confirm(message);
+}
+
 function showEmailContent(data) {
     let content = 'Assunto: ' + data.subject + '\n\n';
     content += 'Mensagem:\n' + data.message;
