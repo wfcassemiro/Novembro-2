@@ -200,9 +200,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $pdf->SetMargins(20, 20, 20);
     $pdf->SetAutoPageBreak(true, 20);
     
+    // Adicionar fontes DejaVu para melhor suporte UTF-8
+    $pdf->AddFont('dejavusans', '', 'dejavusans.php');
+    $pdf->AddFont('dejavusans', 'B', 'dejavusansb.php');
+    $pdf->AddFont('dejavusans', 'I', 'dejavusansi.php');
+    
     $pdf->AddPage();
     
-    $pdf->SetFont('helvetica', 'B', 24);
+    $pdf->SetFont('dejavusans', 'B', 24);
     $pdf->SetTextColor(74, 20, 140);
     $pdf->Cell(0, 15, 'Orçamento', 0, 1, 'C');
     
