@@ -559,6 +559,26 @@ include __DIR__ . '/../vision/includes/sidebar.php';
 </div>
 
 <script>
+// Controlar exibição da seleção de usuários
+function toggleRecipientOptions() {
+    const recipientType = document.getElementById('recipient_type').value;
+    const userSelectionContainer = document.getElementById('user_selection_container');
+    
+    if (recipientType === 'selected') {
+        userSelectionContainer.style.display = 'block';
+    } else {
+        userSelectionContainer.style.display = 'none';
+    }
+}
+
+// Marcar/desmarcar todos os usuários
+function selectAllUsers(select) {
+    const checkboxes = document.querySelectorAll('input[name="selected_users[]"]');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = select;
+    });
+}
+
 function showEmailContent(data) {
     let content = 'Assunto: ' + data.subject + '\n\n';
     content += 'Mensagem:\n' + data.message;
