@@ -173,7 +173,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $langTo = $_SESSION['budget_client']['lang_to'] ?? '';
     
     // Criar PDF usando TCPDF com UTF-8
-    $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
+    class MYPDF extends TCPDF {
+        public function Footer() {
+            $this->SetY(-15);
+            $this->SetFont('helvetica', '', 8);
+            $this->SetTextColor(150, 150, 150);
+            $this->Cell(0, 10, 'Orçamento gerado pelo Dash-T101, da Translators101', 0, 0, 'C');
+        }
+    }
+    
+    $pdf = new MYPDF('P', 'mm', 'A4', true, 'UTF-8', false);
     
     $pdf->SetCreator('Dash-T101');
     $pdf->SetAuthor('Dash-T101');
@@ -181,10 +190,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $pdf->SetSubject('Orçamento de Tradução');
     
     $pdf->setPrintHeader(false);
-    $pdf->setPrintFooter(false);
+    $pdf->setPrintFooter(true);
     
     $pdf->SetMargins(20, 20, 20);
-    $pdf->SetAutoPageBreak(true, 25);
+    $pdf->SetAutoPageBreak(true, 20);
     
     $pdf->AddPage();
     
