@@ -1135,6 +1135,39 @@ include __DIR__ . '/../vision/includes/sidebar.php';
     width: 18px;
     height: 18px;
 }
+
+.payment-methods-list {
+    max-height: 250px;
+    overflow-y: auto;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 15px;
+    background: rgba(0,0,0,0.2);
+}
+
+.payment-method-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.payment-method-item:last-child {
+    border-bottom: none;
+}
+
+.payment-method-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+}
+
+.payment-method-item label {
+    margin: 0 !important;
+    cursor: pointer;
+    flex-grow: 1;
+    font-weight: 400 !important;
+}
 </style>
 
 <div class="main-content">
