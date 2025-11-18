@@ -65,6 +65,9 @@ class DocumentProcessor
             throw new Exception("Não foi possível extrair texto do arquivo");
         }
         
+        // Limpa e normaliza o texto para contagem precisa
+        $text = $this->normalizeTextForCounting($text);
+        
         // Contagem de palavras com suporte UTF-8
         // Usa mb_split para melhor precisão com acentos
         $words = preg_split('/\s+/u', trim($text), -1, PREG_SPLIT_NO_EMPTY);
