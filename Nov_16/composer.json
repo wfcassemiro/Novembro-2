@@ -1,0 +1,7 @@
+{
+    "name": "translators101/email-system",
+    "description": "Sistema de emails para Translators101",
+    "require": {
+        "phpmailer/phpmailer": "^6.8"
+    }
+}
