@@ -146,6 +146,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $log_status = 'pending';
                     }
                     
+                    // Determinar tipo de destinatário para o log
+                    $log_recipient_type = $recipient_type;
+                    if (!empty($external_emails)) {
+                        $log_recipient_type = ($recipient_type === 'selected' || empty($recipients)) ? 'selected' : $recipient_type;
+                    }
+                    
                     // Log do envio
                     $stmt = $pdo->prepare("
                         INSERT INTO email_logs 
@@ -156,7 +162,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $subject, 
                         $message_body, 
                         $sent_count, 
-                        $recipient_type, 
+                        $log_recipient_type, 
                         $_SESSION['user_id'], 
                         $log_status,
                         $lecture_id,
