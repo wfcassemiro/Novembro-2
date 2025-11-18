@@ -195,28 +195,83 @@ class DocumentProcessor
      */
     private function extractFromPdf($path)
     {
-        // Tentativa simples de extração de PDF
-        // Para melhor resultado, considere usar bibliotecas como smalot/pdfparser
-        
-        $content = file_get_contents($path);
-        
-        // Tenta extrair texto bruto
-        $text = '';
-        
-        // Padrão simples para extrair texto de PDFs não-criptografados
-        if (preg_match_all('/\(([^)]+)\)/', $content, $matches)) {
-            $text = implode(' ', $matches[1]);
+        // Tenta usar Smalot PdfParser se disponível
+        if (class_exists('Smalot\PdfParser\Parser')) {
+            try {
+                $parser = new \Smalot\PdfParser\Parser();
+                $pdf = $parser->parseFile($path);
+                $text = $pdf->getText();
+                
+                // Remove caracteres de controle mas preserva UTF-8
+                $text = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/u', '', $text);
+                
+                if (!empty(trim($text))) {
+                    return $text;
+                }
+            } catch (Exception $e) {
+                // Continua para método alternativo
+            }
         }
         
-        // Limpa caracteres especiais
-        $text = preg_replace('/[^\w\s\.\,\!\?\-]/u', '', $text);
+        // Método alternativo: extração básica
+        $content = file_get_contents($path);
+        $text = '';
         
-        if (empty(trim($text))) {
-            // Fallback: conta bytes/caracteres
-            $text = str_repeat('palavra ', strlen($content) / 50);
+        // Extrai texto entre parênteses com suporte UTF-8
+        if (preg_match_all('/\((.*?)\)/s', $content, $matches)) {
+            foreach ($matches[1] as $match) {
+                // Decodifica sequências de escape UTF-16BE comum em PDFs
+                $decoded = $this->decodePdfString($match);
+                $text .= ' ' . $decoded;
+            }
+        }
+        
+        // Extrai também texto entre colchetes angulares (hexadecimal)
+        if (preg_match_all('/<([0-9A-Fa-f]+)>/', $content, $hexMatches)) {
+            foreach ($hexMatches[1] as $hex) {
+                $decoded = '';
+                for ($i = 0; $i < strlen($hex); $i += 4) {
+                    $code = hexdec(substr($hex, $i, 4));
+                    if ($code > 0) {
+                        $decoded .= mb_chr($code, 'UTF-8');
+                    }
+                }
+                $text .= ' ' . $decoded;
+            }
+        }
+        
+        // Limpa o texto preservando UTF-8
+        $text = preg_replace('/\s+/u', ' ', $text);
+        $text = trim($text);
+        
+        if (empty($text)) {
+            // Fallback: estimativa baseada no tamanho do arquivo
+            $fileSize = filesize($path);
+            $estimatedWords = max(100, intval($fileSize / 20));
+            $text = str_repeat('palavra ', $estimatedWords);
         }
         
         return $text;
+    }
+    
+    /**
+     * Decodifica string PDF com suporte a UTF-8 e UTF-16BE
+     */
+    private function decodePdfString($string)
+    {
+        // Remove escape de parênteses
+        $string = str_replace(['\\(', '\\)', '\\\\'], ['(', ')', '\\'], $string);
+        
+        // Detecta UTF-16BE (começa com \xFE\xFF)
+        if (substr($string, 0, 2) === "\xFE\xFF") {
+            $string = mb_convert_encoding(substr($string, 2), 'UTF-8', 'UTF-16BE');
+        }
+        // Tenta converter de ISO-8859-1 para UTF-8 se necessário
+        elseif (!mb_check_encoding($string, 'UTF-8')) {
+            $string = mb_convert_encoding($string, 'UTF-8', 'ISO-8859-1');
+        }
+        
+        return $string;
     }
     
     /**
