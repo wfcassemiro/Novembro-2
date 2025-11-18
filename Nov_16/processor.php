@@ -13,6 +13,11 @@ class DocumentProcessor
      */
     public function process($tmpPath, $fileName)
     {
+        // Garante que o nome do arquivo está em UTF-8
+        if (!mb_check_encoding($fileName, 'UTF-8')) {
+            $fileName = mb_convert_encoding($fileName, 'UTF-8', 'auto');
+        }
+        
         $extension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
         
         $text = '';
@@ -30,6 +35,10 @@ class DocumentProcessor
                 break;
             case 'txt':
                 $text = file_get_contents($tmpPath);
+                // Garante UTF-8 para arquivos de texto
+                if (!mb_check_encoding($text, 'UTF-8')) {
+                    $text = mb_convert_encoding($text, 'UTF-8', 'auto');
+                }
                 break;
             case 'pdf':
                 $text = $this->extractFromPdf($tmpPath);
@@ -43,6 +52,10 @@ class DocumentProcessor
                 break;
             case 'md':
                 $text = file_get_contents($tmpPath);
+                // Garante UTF-8 para arquivos markdown
+                if (!mb_check_encoding($text, 'UTF-8')) {
+                    $text = mb_convert_encoding($text, 'UTF-8', 'auto');
+                }
                 break;
             default:
                 throw new Exception("Formato não suportado: $extension");
@@ -52,11 +65,13 @@ class DocumentProcessor
             throw new Exception("Não foi possível extrair texto do arquivo");
         }
         
-        // Contagem de palavras
-        $wordCount = str_word_count($text);
+        // Contagem de palavras com suporte UTF-8
+        // Usa mb_split para melhor precisão com acentos
+        $words = preg_split('/\s+/u', trim($text), -1, PREG_SPLIT_NO_EMPTY);
+        $wordCount = count($words);
         
         // Contagem de segmentos (aproximado: por sentença)
-        $segments = preg_split('/[.!?]+/', $text, -1, PREG_SPLIT_NO_EMPTY);
+        $segments = preg_split('/[.!?]+/u', $text, -1, PREG_SPLIT_NO_EMPTY);
         $segmentCount = count($segments);
         
         // Gera fuzzy matches simulados (distribuição aleatória mas realista)
