@@ -1558,18 +1558,41 @@ include __DIR__ . '/../vision/includes/sidebar.php';
             </div>
             
             <div class="form-group">
-                <label for="payment_method">Forma de pagamento:</label>
-                <select id="payment_method" name="payment_method" required class="vision-select">
-                    <option value="">– Selecione –</option>
-                    <option value="Transferência bancária">Transferência bancária</option>
-                    <option value="PIX">PIX</option>
-                    <option value="Boleto bancário">Boleto bancário</option>
-                    <option value="Cartão de crédito">Cartão de crédito</option>
-                    <option value="Cartão de débito">Cartão de débito</option>
-                    <option value="Dinheiro">Dinheiro</option>
-                    <option value="Cheque">Cheque</option>
-                    <option value="Outro">Outro</option>
-                </select>
+                <label>Forma de pagamento (selecione uma ou mais):</label>
+                <div class="payment-methods-list">
+                    <div class="payment-method-item">
+                        <input type="checkbox" name="payment_methods[]" value="Transferência bancária" id="pm_transferencia">
+                        <label for="pm_transferencia">Transferência bancária</label>
+                    </div>
+                    <div class="payment-method-item">
+                        <input type="checkbox" name="payment_methods[]" value="PIX" id="pm_pix">
+                        <label for="pm_pix">PIX</label>
+                    </div>
+                    <div class="payment-method-item">
+                        <input type="checkbox" name="payment_methods[]" value="Boleto bancário" id="pm_boleto">
+                        <label for="pm_boleto">Boleto bancário</label>
+                    </div>
+                    <div class="payment-method-item">
+                        <input type="checkbox" name="payment_methods[]" value="Cartão de crédito" id="pm_credito">
+                        <label for="pm_credito">Cartão de crédito</label>
+                    </div>
+                    <div class="payment-method-item">
+                        <input type="checkbox" name="payment_methods[]" value="Cartão de débito" id="pm_debito">
+                        <label for="pm_debito">Cartão de débito</label>
+                    </div>
+                    <div class="payment-method-item">
+                        <input type="checkbox" name="payment_methods[]" value="Dinheiro" id="pm_dinheiro">
+                        <label for="pm_dinheiro">Dinheiro</label>
+                    </div>
+                    <div class="payment-method-item">
+                        <input type="checkbox" name="payment_methods[]" value="Cheque" id="pm_cheque">
+                        <label for="pm_cheque">Cheque</label>
+                    </div>
+                    <div class="payment-method-item">
+                        <input type="checkbox" name="payment_methods[]" value="Outro" id="pm_outro">
+                        <label for="pm_outro">Outro</label>
+                    </div>
+                </div>
             </div>
             
             <div class="form-group">
