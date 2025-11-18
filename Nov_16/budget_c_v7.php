@@ -289,7 +289,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     if (!empty($langFrom) && !empty($langTo)) {
         $pdf->SetFont('helvetica', 'I', 11);
         $pdf->SetTextColor(80, 80, 80);
-        $pdf->Cell(0, 6, 'Idioma de origem: ' . strtoupper($langFrom) . ' → Idioma de chegada: ' . strtoupper($langTo), 0, 1);
+        $pdf->Cell(0, 6, 'Idioma de origem: ' . strtoupper($langFrom) . ' -> Idioma de chegada: ' . strtoupper($langTo), 0, 1);
         $pdf->Ln(3);
     }
     
@@ -297,8 +297,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $pdf->SetTextColor(60, 60, 60);
     
     foreach ($selectedFiles as $file) {
-        $pdf->Cell(10, 6, '•', 0, 0);
-        $pdf->Cell(0, 6, $file, 0, 1);
+        // Garante UTF-8 no nome do arquivo
+        $fileName = mb_convert_encoding($file, 'UTF-8', 'UTF-8');
+        $pdf->Cell(10, 6, chr(149), 0, 0); // bullet point
+        $pdf->Cell(0, 6, $fileName, 0, 1);
     }
     
     $pdf->Ln(10);
