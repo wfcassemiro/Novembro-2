@@ -2,6 +2,11 @@
 // /app/Nov_16/budget_c_v7.php
 // Versão 7 - Ajustes no PDF e tarja roxa
 
+// Define UTF-8 como charset padrão
+header('Content-Type: text/html; charset=UTF-8');
+mb_internal_encoding('UTF-8');
+mb_http_output('UTF-8');
+
 session_start();
 
 require_once __DIR__ . '/../vendor/autoload.php';
