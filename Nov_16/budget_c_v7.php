@@ -255,13 +255,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $pdf->Ln(5);
     
     // Forma de pagamento
-    if (!empty($paymentMethod)) {
+    if (!empty($paymentMethods)) {
         $pdf->SetFont('helvetica', 'B', 12);
         $pdf->SetTextColor(0, 0, 0);
-        $pdf->Cell(90, 6, 'Forma de pagamento:', 0, 0);
+        $pdf->Cell(0, 6, 'Formas de pagamento:', 0, 1);
+        
         $pdf->SetFont('helvetica', '', 12);
         $pdf->SetTextColor(60, 60, 60);
-        $pdf->Cell(0, 6, $paymentMethod, 0, 1);
+        foreach ($paymentMethods as $method) {
+            $pdf->Cell(10, 6, '•', 0, 0);
+            $pdf->Cell(0, 6, $method, 0, 1);
+        }
     }
     
     // Data de pagamento
