@@ -216,20 +216,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $pdf->Ln(5);
     }
     
-    // Informações do Cliente
-    $pdf->SetFont('helvetica', 'B', 14);
-    $pdf->SetTextColor(0, 0, 0);
-    $pdf->Cell(0, 8, 'Cliente:', 0, 1);
-    
-    $pdf->SetFont('helvetica', '', 12);
-    $pdf->SetTextColor(60, 60, 60);
-    $pdf->Cell(0, 6, $clientName, 0, 1);
-    
+    // Informações do Contato
     if (!empty($contactName)) {
-        $pdf->Cell(0, 6, 'Contato: ' . $contactName, 0, 1);
+        $pdf->SetFont('helvetica', 'B', 14);
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->Cell(0, 8, 'Contato:', 0, 1);
+        
+        $pdf->SetFont('helvetica', '', 12);
+        $pdf->SetTextColor(60, 60, 60);
+        $pdf->Cell(0, 6, $contactName, 0, 1);
+        
+        $pdf->Ln(5);
     }
-    
-    $pdf->Ln(5);
     
     // Datas
     $pdf->SetFont('helvetica', 'B', 12);
