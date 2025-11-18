@@ -310,16 +310,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     // Observações
     $pdf->SetFont('helvetica', 'I', 9);
     $pdf->SetTextColor(120, 120, 120);
-    $pdf->MultiCell(0, 5, 'Este orçamento é válido até a data especificada. Após a aprovação, iniciaremos o trabalho conforme o prazo acordado.', 0, 'L');
-    
-    // Rodapé
-    $pdf->Ln(5);
-    $pdf->SetFont('helvetica', '', 8);
-    $pdf->SetTextColor(150, 150, 150);
-    $pdf->Cell(0, 5, 'Orçamento gerado pelo Dash-T101, da Translators101', 0, 1, 'C');
+    $pdf->MultiCell(0, 5, 'Este orçamento é válido até a data especificada acima. Após a aprovação, iniciaremos o trabalho imediatamente.', 0, 'L');
     
     // Output com nome UTF-8
-    $filename = 'Orcamento - ' . $clientName . '.pdf';
+    $filename = 'Orcamento - ' . $contactName . '.pdf';
     $pdf->Output($filename, 'D');
     exit;
 }
