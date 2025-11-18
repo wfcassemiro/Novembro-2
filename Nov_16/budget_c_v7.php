@@ -547,7 +547,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajax_action'])) {
         $response['message'] = $e->getMessage();
     }
     
-    echo json_encode($response);
+    header('Content-Type: application/json; charset=UTF-8');
+    echo json_encode($response, JSON_UNESCAPED_UNICODE);
     exit;
 }
 
@@ -612,7 +613,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['files']) && !isset($
         $response['message'] = $e->getMessage();
     }
     
-    echo json_encode($response);
+    header('Content-Type: application/json; charset=UTF-8');
+    echo json_encode($response, JSON_UNESCAPED_UNICODE);
     exit;
 }
 
