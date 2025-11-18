@@ -353,10 +353,11 @@ include __DIR__ . '/../vision/includes/sidebar.php';
                     <label for="recipient_type">
                         <i class="fas fa-users"></i> Destinatários *
                     </label>
-                    <select id="recipient_type" name="recipient_type" required>
+                    <select id="recipient_type" name="recipient_type" required onchange="toggleRecipientOptions()">
                         <option value="all">Todos os usuários (<?php echo $total_users; ?>)</option>
                         <option value="subscribers">Apenas assinantes (<?php echo $subscribers; ?>)</option>
                         <option value="non_subscribers">Não assinantes (<?php echo $non_subscribers; ?>)</option>
+                        <option value="selected">Selecionar usuários individualmente</option>
                     </select>
                 </div>
 
