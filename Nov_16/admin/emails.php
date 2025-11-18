@@ -451,7 +451,7 @@ include __DIR__ . '/../vision/includes/sidebar.php';
             </div>
 
             <div class="form-actions">
-                <button type="submit" class="cta-btn" onclick="return confirm('Tem certeza que deseja enviar este e-mail?')">
+                <button type="submit" class="cta-btn" onclick="return validateAndConfirm()">
                     <i class="fas fa-paper-plane"></i> Enviar E-mail
                 </button>
             </div>
