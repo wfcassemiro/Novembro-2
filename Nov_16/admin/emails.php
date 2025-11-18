@@ -23,14 +23,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $message_body = trim($_POST['message']);
         $access_link = trim($_POST['access_link'] ?? '');
         $lecture_id = $_POST['lecture_id'] ?? null;
+        $selected_users = $_POST['selected_users'] ?? [];
+        $external_emails = trim($_POST['external_emails'] ?? '');
         
         if (empty($subject) || empty($message_body)) {
             $error = 'Assunto e mensagem são obrigatórios.';
         } else {
             try {
-                // Buscar destinatários com queries corrigidas
-                if ($recipient_type === 'all') {
+                $recipients = [];
+                
+                // Opção 1: Usuários selecionados individualmente
+                if ($recipient_type === 'selected' && !empty($selected_users)) {
+                    $placeholders = str_repeat('?,', count($selected_users) - 1) . '?';
+                    $stmt = $pdo->prepare("
+                        SELECT email, name FROM users 
+                        WHERE id IN ($placeholders) AND is_active = 1
+                    ");
+                    $stmt->execute($selected_users);
+                    $recipients = $stmt->fetchAll();
+                    
+                // Opção 2: Grupos predefinidos
+                } elseif ($recipient_type === 'all') {
                     $stmt = $pdo->query("SELECT email, name FROM users WHERE is_active = 1");
+                    $recipients = $stmt->fetchAll();
                 } elseif ($recipient_type === 'subscribers') {
                     // Assinantes: is_subscriber = 1 OU role = 'subscriber' OU subscription_expires > NOW()
                     $stmt = $pdo->query("
@@ -42,7 +57,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             OR (subscription_expires IS NOT NULL AND subscription_expires > NOW())
                         )
                     ");
-                } else {
+                    $recipients = $stmt->fetchAll();
+                } elseif ($recipient_type === 'non_subscribers') {
                     // Não assinantes
                     $stmt = $pdo->query("
                         SELECT email, name FROM users 
@@ -51,9 +67,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         AND role != 'subscriber'
                         AND (subscription_expires IS NULL OR subscription_expires <= NOW())
                     ");
+                    $recipients = $stmt->fetchAll();
                 }
                 
-                $recipients = $stmt->fetchAll();
+                // Adicionar emails externos (não cadastrados)
+                if (!empty($external_emails)) {
+                    $external_list = array_map('trim', explode(',', $external_emails));
+                    foreach ($external_list as $ext_email) {
+                        if (filter_var($ext_email, FILTER_VALIDATE_EMAIL)) {
+                            $recipients[] = [
+                                'email' => $ext_email,
+                                'name' => 'Destinatário'
+                            ];
+                        }
+                    }
+                }
                 
                 if (empty($recipients)) {
                     $error = 'Nenhum destinatário encontrado para esta seleção.';
