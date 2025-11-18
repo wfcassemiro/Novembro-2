@@ -1557,6 +1557,26 @@ include __DIR__ . '/../vision/includes/sidebar.php';
             </div>
             
             <div class="form-group">
+                <label for="payment_method">Forma de pagamento:</label>
+                <select id="payment_method" name="payment_method" required class="vision-select">
+                    <option value="">– Selecione –</option>
+                    <option value="Transferência bancária">Transferência bancária</option>
+                    <option value="PIX">PIX</option>
+                    <option value="Boleto bancário">Boleto bancário</option>
+                    <option value="Cartão de crédito">Cartão de crédito</option>
+                    <option value="Cartão de débito">Cartão de débito</option>
+                    <option value="Dinheiro">Dinheiro</option>
+                    <option value="Cheque">Cheque</option>
+                    <option value="Outro">Outro</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="payment_date">Data de pagamento (DD-MM-AAAA):</label>
+                <input type="text" id="payment_date" name="payment_date" required class="vision-input" placeholder="DD-MM-AAAA" pattern="\d{2}-\d{2}-\d{4}">
+            </div>
+            
+            <div class="form-group">
                 <label for="final_price">Preço final:</label>
                 <input type="text" id="final_price" name="final_price" required class="vision-input" placeholder="0,00">
             </div>
