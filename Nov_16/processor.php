@@ -93,6 +93,34 @@ class DocumentProcessor
     }
     
     /**
+     * Normaliza texto para contagem precisa de palavras
+     * Remove quebras de linha desnecessárias e espaços duplicados
+     */
+    private function normalizeTextForCounting($text)
+    {
+        // Remove quebras de linha no meio de frases (hifenização)
+        // Ex: "pala-\nvras" vira "palavras"
+        $text = preg_replace('/(\w)-\s*\n\s*(\w)/u', '$1$2', $text);
+        
+        // Substitui quebras de linha por espaços (exceto múltiplas quebras que indicam parágrafos)
+        $text = preg_replace('/(?<!\n)\n(?!\n)/u', ' ', $text);
+        
+        // Remove múltiplos espaços
+        $text = preg_replace('/\s+/u', ' ', $text);
+        
+        // Remove espaços antes de pontuação
+        $text = preg_replace('/\s+([.,;:!?])/u', '$1', $text);
+        
+        // Remove caracteres de controle e espaços não-quebráveis problemáticos
+        $text = preg_replace('/[\x00-\x1F\x7F\xA0]/u', ' ', $text);
+        
+        // Normaliza espaços novamente após limpeza
+        $text = preg_replace('/\s+/u', ' ', $text);
+        
+        return trim($text);
+    }
+    
+    /**
      * Gera dados de fuzzy matches simulados
      */
     private function generateFuzzyMatches($totalSegments)
