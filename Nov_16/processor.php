@@ -251,6 +251,9 @@ class DocumentProcessor
                 // Remove caracteres de controle mas preserva UTF-8
                 $text = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/u', ' ', $text);
                 
+                // Remove hifenização no final de linha
+                $text = preg_replace('/(\w)-\s*\n\s*(\w)/u', '$1$2', $text);
+                
                 if (!empty(trim($text))) {
                     return $text;
                 }
