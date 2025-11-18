@@ -379,6 +379,65 @@ include __DIR__ . '/../vision/includes/sidebar.php';
                     </small>
                 </div>
 
+                <!-- Seleção Individual de Usuários -->
+                <div class="form-group" style="grid-column: span 2; display: none;" id="user_selection_container">
+                    <label>
+                        <i class="fas fa-user-check"></i> Selecione os Usuários
+                        <button type="button" onclick="selectAllUsers(true)" class="page-btn" style="margin-left: 10px; padding: 5px 10px; font-size: 0.85rem;">
+                            <i class="fas fa-check-double"></i> Marcar Todos
+                        </button>
+                        <button type="button" onclick="selectAllUsers(false)" class="page-btn" style="margin-left: 5px; padding: 5px 10px; font-size: 0.85rem;">
+                            <i class="fas fa-times"></i> Desmarcar Todos
+                        </button>
+                    </label>
+                    <div id="users_list" style="max-height: 300px; overflow-y: auto; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; margin-top: 10px;">
+                        <?php
+                        try {
+                            $stmt = $pdo->query("
+                                SELECT id, name, email, 
+                                       CASE 
+                                           WHEN is_subscriber = 1 OR role = 'subscriber' THEN 'Assinante'
+                                           ELSE 'Não assinante'
+                                       END as user_type
+                                FROM users 
+                                WHERE is_active = 1 
+                                ORDER BY name ASC
+                            ");
+                            $all_users = $stmt->fetchAll();
+                            
+                            foreach ($all_users as $user) {
+                                $badge_color = $user['user_type'] === 'Assinante' ? '#10b981' : '#6b7280';
+                                echo '<div style="padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.1);">';
+                                echo '<label style="display: flex; align-items: center; cursor: pointer;">';
+                                echo '<input type="checkbox" name="selected_users[]" value="' . htmlspecialchars($user['id']) . '" style="margin-right: 10px;">';
+                                echo '<span style="flex: 1;">' . htmlspecialchars($user['name']) . ' <small style="color: #999;">(' . htmlspecialchars($user['email']) . ')</small></span>';
+                                echo '<span style="background: ' . $badge_color . '; color: white; padding: 3px 8px; border-radius: 12px; font-size: 0.75rem;">' . $user['user_type'] . '</span>';
+                                echo '</label>';
+                                echo '</div>';
+                            }
+                        } catch (PDOException $e) {
+                            echo '<p style="color: #ef4444;">Erro ao carregar usuários</p>';
+                        }
+                        ?>
+                    </div>
+                    <small style="color: #999; display: block; margin-top: 10px;">
+                        <strong>Total de usuários disponíveis:</strong> <?php echo count($all_users ?? []); ?>
+                    </small>
+                </div>
+
+                <!-- Emails Externos -->
+                <div class="form-group" style="grid-column: span 2;">
+                    <label for="external_emails">
+                        <i class="fas fa-envelope-open-text"></i> Emails Externos (Opcional)
+                    </label>
+                    <textarea id="external_emails" name="external_emails" rows="3"
+                              style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #fff; font-family: monospace;"
+                              placeholder="email1@exemplo.com, email2@exemplo.com, email3@exemplo.com"></textarea>
+                    <small style="color: #999; display: block; margin-top: 5px;">
+                        <strong>Separe múltiplos emails por vírgula.</strong> Estes emails receberão a mensagem mesmo que não sejam usuários cadastrados.
+                    </small>
+                </div>
+
                 <div class="form-group form-group-wide" style="grid-column: span 2;">
                     <label for="message">
                         <i class="fas fa-edit"></i> Mensagem *
