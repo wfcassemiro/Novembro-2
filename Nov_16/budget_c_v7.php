@@ -1323,7 +1323,7 @@ include __DIR__ . '/../vision/includes/sidebar.php';
                     <?php foreach ($_SESSION['analyses'] as $index => $analysis): ?>
                     <div class="file-item" data-analysis-index="<?= $index ?>">
                         <span class="file-item-name">
-                            <i class="far fa-file"></i> <?= htmlspecialchars($analysis['fileName']) ?>
+                            <i class="far fa-file"></i> <?= htmlspecialchars($analysis['fileName'], ENT_QUOTES, 'UTF-8') ?>
                         </span>
                         <span class="file-item-remove btn-remove-analysis" data-index="<?= $index ?>">
                             <i class="fas fa-times"></i>
