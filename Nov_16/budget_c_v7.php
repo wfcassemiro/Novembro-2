@@ -181,7 +181,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     class MYPDF extends TCPDF {
         public function Footer() {
             $this->SetY(-15);
-            $this->SetFont('helvetica', '', 8);
+            $this->SetFont('dejavusans', '', 8);
             $this->SetTextColor(150, 150, 150);
             $this->Cell(0, 10, 'Orçamento gerado pelo Dash-T101, da Translators101', 0, 0, 'C');
         }
