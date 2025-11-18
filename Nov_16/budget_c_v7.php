@@ -162,6 +162,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $companyName = trim($_POST['company_name'] ?? '');
     $deliveryDate = trim($_POST['delivery_date'] ?? '');
     $validityDate = trim($_POST['validity_date'] ?? '');
+    $paymentMethod = trim($_POST['payment_method'] ?? '');
+    $paymentDate = trim($_POST['payment_date'] ?? '');
     $finalPrice = parseBRLFloat($_POST['final_price'] ?? '0');
     $selectedFiles = $_POST['selected_files'] ?? [];
     
