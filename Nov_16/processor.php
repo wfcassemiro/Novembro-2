@@ -249,7 +249,7 @@ class DocumentProcessor
                 $text = $pdf->getText();
                 
                 // Remove caracteres de controle mas preserva UTF-8
-                $text = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/u', '', $text);
+                $text = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/u', ' ', $text);
                 
                 if (!empty(trim($text))) {
                     return $text;
