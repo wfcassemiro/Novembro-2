@@ -215,11 +215,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     
     // Empresa geradora
     if (!empty($companyName)) {
-        $pdf->SetFont('helvetica', 'B', 14);
+        $pdf->SetFont('dejavusans', 'B', 14);
         $pdf->SetTextColor(0, 0, 0);
         $pdf->Cell(0, 8, 'Empresa:', 0, 1);
         
-        $pdf->SetFont('helvetica', '', 12);
+        $pdf->SetFont('dejavusans', '', 12);
         $pdf->SetTextColor(60, 60, 60);
         $pdf->Cell(0, 6, $companyName, 0, 1);
         
@@ -228,11 +228,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     
     // Informações do Contato
     if (!empty($contactName)) {
-        $pdf->SetFont('helvetica', 'B', 14);
+        $pdf->SetFont('dejavusans', 'B', 14);
         $pdf->SetTextColor(0, 0, 0);
         $pdf->Cell(0, 8, 'Contato:', 0, 1);
         
-        $pdf->SetFont('helvetica', '', 12);
+        $pdf->SetFont('dejavusans', '', 12);
         $pdf->SetTextColor(60, 60, 60);
         $pdf->Cell(0, 6, $contactName, 0, 1);
         
@@ -240,25 +240,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     }
     
     // Datas
-    $pdf->SetFont('helvetica', 'B', 12);
+    $pdf->SetFont('dejavusans', 'B', 12);
     $pdf->SetTextColor(0, 0, 0);
     $pdf->Cell(90, 6, 'Prazo de entrega:', 0, 0);
-    $pdf->SetFont('helvetica', '', 12);
+    $pdf->SetFont('dejavusans', '', 12);
     $pdf->SetTextColor(60, 60, 60);
     $pdf->Cell(0, 6, $deliveryDate, 0, 1);
     
-    $pdf->SetFont('helvetica', 'B', 12);
+    $pdf->SetFont('dejavusans', 'B', 12);
     $pdf->SetTextColor(0, 0, 0);
     $pdf->Cell(90, 6, 'Validade do orçamento:', 0, 0);
-    $pdf->SetFont('helvetica', '', 12);
+    $pdf->SetFont('dejavusans', '', 12);
     $pdf->SetTextColor(60, 60, 60);
     $pdf->Cell(0, 6, $validityDate, 0, 1);
     
     // Data de geração
-    $pdf->SetFont('helvetica', 'B', 12);
+    $pdf->SetFont('dejavusans', 'B', 12);
     $pdf->SetTextColor(0, 0, 0);
     $pdf->Cell(90, 6, 'Orçamento gerado em:', 0, 0);
-    $pdf->SetFont('helvetica', '', 12);
+    $pdf->SetFont('dejavusans', '', 12);
     $pdf->SetTextColor(60, 60, 60);
     $pdf->Cell(0, 6, date('d-m-Y'), 0, 1);
     
@@ -266,11 +266,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     
     // Forma de pagamento
     if (!empty($paymentMethods)) {
-        $pdf->SetFont('helvetica', 'B', 12);
+        $pdf->SetFont('dejavusans', 'B', 12);
         $pdf->SetTextColor(0, 0, 0);
         $pdf->Cell(0, 6, 'Formas de pagamento:', 0, 1);
         
-        $pdf->SetFont('helvetica', '', 12);
+        $pdf->SetFont('dejavusans', '', 12);
         $pdf->SetTextColor(60, 60, 60);
         foreach ($paymentMethods as $method) {
             $pdf->Cell(10, 6, '•', 0, 0);
@@ -278,53 +278,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         }
     }
     
-    // Data de pagamento
-    if (!empty($paymentDate)) {
-        $pdf->SetFont('helvetica', 'B', 12);
-        $pdf->SetTextColor(0, 0, 0);
-        $pdf->Cell(90, 6, 'Data de pagamento:', 0, 0);
-        $pdf->SetFont('helvetica', '', 12);
-        $pdf->SetTextColor(60, 60, 60);
-        $pdf->Cell(0, 6, $paymentDate, 0, 1);
-    }
-    
     $pdf->Ln(10);
     
     // Arquivos
-    $pdf->SetFont('helvetica', 'B', 14);
+    $pdf->SetFont('dejavusans', 'B', 14);
     $pdf->SetTextColor(0, 0, 0);
     $pdf->Cell(0, 8, 'Arquivos para tradução:', 0, 1);
     
     // Idiomas
     if (!empty($langFrom) && !empty($langTo)) {
-        $pdf->SetFont('helvetica', 'I', 11);
+        $pdf->SetFont('dejavusans', 'I', 11);
         $pdf->SetTextColor(80, 80, 80);
         $pdf->Cell(0, 6, 'Idioma de origem: ' . strtoupper($langFrom) . ' -> Idioma de chegada: ' . strtoupper($langTo), 0, 1);
         $pdf->Ln(3);
     }
     
-    $pdf->SetFont('helvetica', '', 11);
+    $pdf->SetFont('dejavusans', '', 11);
     $pdf->SetTextColor(60, 60, 60);
     
     foreach ($selectedFiles as $file) {
-        // Garante UTF-8 no nome do arquivo
-        $fileName = mb_convert_encoding($file, 'UTF-8', 'UTF-8');
-        $pdf->Cell(10, 6, chr(149), 0, 0); // bullet point
-        $pdf->Cell(0, 6, $fileName, 0, 1);
+        $pdf->Cell(10, 6, '•', 0, 0);
+        $pdf->Cell(0, 6, $file, 0, 1);
     }
     
     $pdf->Ln(10);
     
     // Valor
     $pdf->SetFillColor(244, 244, 244);
-    $pdf->SetFont('helvetica', 'B', 16);
+    $pdf->SetFont('dejavusans', 'B', 16);
     $pdf->SetTextColor(34, 197, 94);
     $pdf->Cell(0, 12, 'Valor total: ' . $currency . ' ' . number_format($finalPrice, 2, ',', '.'), 0, 1, 'C', true);
+    
+    // Data de pagamento (centralizada, embaixo do valor)
+    if (!empty($paymentDate)) {
+        $pdf->Ln(5);
+        $pdf->SetFont('dejavusans', 'B', 12);
+        $pdf->SetTextColor(80, 80, 80);
+        $pdf->Cell(0, 6, 'Data de pagamento: ' . $paymentDate, 0, 1, 'C');
+    }
     
     $pdf->Ln(15);
     
     // Observações
-    $pdf->SetFont('helvetica', 'I', 9);
+    $pdf->SetFont('dejavusans', 'I', 9);
     $pdf->SetTextColor(120, 120, 120);
     $pdf->MultiCell(0, 5, 'Este orçamento é válido até a data especificada acima. Após a aprovação, iniciaremos o trabalho imediatamente.', 0, 'L');
     
