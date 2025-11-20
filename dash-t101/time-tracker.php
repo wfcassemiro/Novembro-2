@@ -196,38 +196,10 @@ $page_title = 'Time Tracker - Rastreamento de Tempo';
 </div>
 
 <script>
-// DEBUG: Configuração e logs
-console.log('========== TIME TRACKER DEBUG ==========');
-console.log('1. Script inline carregado');
-
 // Configuração da API
 const API_URL = window.API_URL || '/dash-t101/api_time_tracker.php';
-console.log('2. API_URL configurado:', API_URL);
-
-// Verificar se jQuery está disponível (se necessário)
-console.log('3. jQuery disponível?', typeof jQuery !== 'undefined' ? 'SIM' : 'NÃO');
-
-// Testar fetch
-console.log('4. Fetch disponível?', typeof fetch !== 'undefined' ? 'SIM' : 'NÃO');
-
-// Log quando DOM estiver pronto
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('5. DOM Content Loaded - página carregada');
-    console.log('6. Elementos importantes:');
-    console.log('   - timerProject:', document.getElementById('timerProject') ? 'EXISTE' : 'NÃO EXISTE');
-    console.log('   - projectsList:', document.getElementById('projectsList') ? 'EXISTE' : 'NÃO EXISTE');
-    console.log('   - entriesList:', document.getElementById('entriesList') ? 'EXISTE' : 'NÃO EXISTE');
-});
-
-// Interceptar erros
-window.addEventListener('error', function(e) {
-    console.error('ERRO CAPTURADO:', e.message, 'em', e.filename, 'linha', e.lineno);
-});
 </script>
 <script src="/vision/assets/js/time-tracker.js?v=<?php echo time(); ?>"></script>
-<script>
-console.log('7. time-tracker.js carregado (se não houver erros acima)');
-</script>
 
 <?php if (file_exists(__DIR__ . '/vision/includes/footer.php')): ?>
     <?php include __DIR__ . '/vision/includes/footer.php'; ?>
