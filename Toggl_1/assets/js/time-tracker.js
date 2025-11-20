@@ -106,7 +106,7 @@ function startTimer() {
     if (projectId) formData.append('project_id', projectId);
     if (taskId) formData.append('task_id', taskId);
     
-    fetch('/Toggl_1/api.php', {
+    fetch(API_URL, {
         method: 'POST',
         body: formData
     })
@@ -132,7 +132,7 @@ function pauseTimer() {
     formData.append('action', 'entry_pause');
     formData.append('id', state.runningEntry.id);
     
-    fetch('/Toggl_1/api.php', {
+    fetch(API_URL, {
         method: 'POST',
         body: formData
     })
@@ -159,7 +159,7 @@ function resumeTimer() {
     formData.append('action', 'entry_resume');
     formData.append('id', state.runningEntry.id);
     
-    fetch('/Toggl_1/api.php', {
+    fetch(API_URL, {
         method: 'POST',
         body: formData
     })
@@ -188,7 +188,7 @@ function stopTimer() {
     formData.append('action', 'entry_stop');
     formData.append('id', state.runningEntry.id);
     
-    fetch('/Toggl_1/api.php', {
+    fetch(API_URL, {
         method: 'POST',
         body: formData
     })
@@ -482,7 +482,7 @@ function saveProject() {
     const projectId = formData.get('id');
     formData.append('action', projectId ? 'project_update' : 'project_create');
     
-    fetch('/Toggl_1/api.php', {
+    fetch(API_URL, {
         method: 'POST',
         body: formData
     })
@@ -513,7 +513,7 @@ function deleteProject(projectId) {
     formData.append('action', 'project_delete');
     formData.append('id', projectId);
     
-    fetch('/Toggl_1/api.php', {
+    fetch(API_URL, {
         method: 'POST',
         body: formData
     })
@@ -607,7 +607,7 @@ function createTask() {
     formData.append('project_id', state.currentProject);
     formData.append('name', name);
     
-    fetch('/Toggl_1/api.php', {
+    fetch(API_URL, {
         method: 'POST',
         body: formData
     })
@@ -634,7 +634,7 @@ function deleteTask(taskId) {
     formData.append('action', 'task_delete');
     formData.append('id', taskId);
     
-    fetch('/Toggl_1/api.php', {
+    fetch(API_URL, {
         method: 'POST',
         body: formData
     })
@@ -724,7 +724,7 @@ function deleteEntry(entryId) {
     formData.append('action', 'entry_delete');
     formData.append('id', entryId);
     
-    fetch('/Toggl_1/api.php', {
+    fetch(API_URL, {
         method: 'POST',
         body: formData
     })
