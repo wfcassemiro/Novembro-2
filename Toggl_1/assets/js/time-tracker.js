@@ -386,17 +386,32 @@ function createQuickProject(event) {
 
 // ===== PROJECTS =====
 function loadProjects() {
-    fetch(API_URL + '?action=project_list')
-        .then(response => response.json())
+    const url = API_URL + '?action=project_list';
+    console.log('16. loadProjects() - URL:', url);
+    
+    fetch(url)
+        .then(response => {
+            console.log('17. Resposta recebida:', response.status, response.statusText);
+            if (!response.ok) {
+                throw new Error('HTTP error! status: ' + response.status);
+            }
+            return response.json();
+        })
         .then(data => {
+            console.log('18. Dados recebidos:', data);
             if (data.success) {
                 state.projects = data.projects;
+                console.log('19. Projetos carregados:', state.projects.length);
                 renderProjects();
                 updateProjectSelects();
+            } else {
+                console.error('20. API retornou erro:', data.error);
+                alert('Erro ao carregar projetos: ' + (data.error || 'Erro desconhecido'));
             }
         })
         .catch(error => {
-            console.error('Error loading projects:', error);
+            console.error('21. ERRO ao carregar projetos:', error);
+            alert('Erro de conexão ao carregar projetos: ' + error.message);
         });
 }
 
