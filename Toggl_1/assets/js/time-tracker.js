@@ -290,7 +290,7 @@ function updateTimerUI() {
         // Atualizar info
         let info = '';
         if (state.runningEntry.project_name) {
-            info += '<span style=\"color: ' + (state.runningEntry.project_color || '#7B61FF') + '\">';
+            info += '<span style="color: ' + (state.runningEntry.project_color || '#7B61FF') + '">';
             info += '● ' + state.runningEntry.project_name;
             if (state.runningEntry.task_name) {
                 info += ' - ' + state.runningEntry.task_name;
@@ -420,12 +420,12 @@ function renderProjects() {
     
     if (state.projects.length === 0) {
         container.innerHTML = `
-            <div class=\"empty-state\">
-                <i class=\"fas fa-folder-open\"></i>
+            <div class="empty-state">
+                <i class="fas fa-folder-open"></i>
                 <h3>Nenhum projeto encontrado</h3>
                 <p>Crie seu primeiro projeto para começar a rastrear tempo</p>
-                <button class=\"btn btn-primary\" onclick=\"openProjectModal()\">
-                    <i class=\"fas fa-plus\"></i> Criar Projeto
+                <button class="btn btn-primary" onclick="openProjectModal()">
+                    <i class="fas fa-plus"></i> Criar Projeto
                 </button>
             </div>
         `;
@@ -433,38 +433,38 @@ function renderProjects() {
     }
     
     container.innerHTML = state.projects.map(project => `
-        <div class=\"project-card\" style=\"border-left-color: ${project.color};\">
-            <div class=\"project-header\">
+        <div class="project-card" style="border-left-color: ${project.color};">
+            <div class="project-header">
                 <div>
-                    <h3 class=\"project-name\">${escapeHtml(project.name)}</h3>
+                    <h3 class="project-name">${escapeHtml(project.name)}</h3>
                 </div>
-                <div class=\"project-actions\">
-                    <button class=\"btn btn-sm btn-icon btn-secondary\" 
-                            onclick=\"openTasksModal('${project.id}', '${escapeHtml(project.name)}')\">
-                        <i class=\"fas fa-tasks\"></i>
+                <div class="project-actions">
+                    <button class="btn btn-sm btn-icon btn-secondary" 
+                            onclick="openTasksModal('${project.id}', '${escapeHtml(project.name)}')">
+                        <i class="fas fa-tasks"></i>
                     </button>
-                    <button class=\"btn btn-sm btn-icon btn-secondary\" 
-                            onclick=\"editProject('${project.id}')\">
-                        <i class=\"fas fa-edit\"></i>
+                    <button class="btn btn-sm btn-icon btn-secondary" 
+                            onclick="editProject('${project.id}')">
+                        <i class="fas fa-edit"></i>
                     </button>
-                    <button class=\"btn btn-sm btn-icon btn-danger\" 
-                            onclick=\"deleteProject('${project.id}')\">
-                        <i class=\"fas fa-trash\"></i>
+                    <button class="btn btn-sm btn-icon btn-danger" 
+                            onclick="deleteProject('${project.id}')">
+                        <i class="fas fa-trash"></i>
                     </button>
                 </div>
             </div>
-            <div class=\"project-stats\">
-                <div class=\"project-stat\">
-                    <span class=\"project-stat-value\">${project.task_count}</span>
-                    <span class=\"project-stat-label\">Tarefas</span>
+            <div class="project-stats">
+                <div class="project-stat">
+                    <span class="project-stat-value">${project.task_count}</span>
+                    <span class="project-stat-label">Tarefas</span>
                 </div>
-                <div class=\"project-stat\">
-                    <span class=\"project-stat-value\">${project.entry_count}</span>
-                    <span class=\"project-stat-label\">Registros</span>
+                <div class="project-stat">
+                    <span class="project-stat-value">${project.entry_count}</span>
+                    <span class="project-stat-label">Registros</span>
                 </div>
-                <div class=\"project-stat\">
-                    <span class=\"project-stat-value\">${project.duration_formatted}</span>
-                    <span class=\"project-stat-label\">Tempo Total</span>
+                <div class="project-stat">
+                    <span class="project-stat-value">${project.duration_formatted}</span>
+                    <span class="project-stat-label">Tempo Total</span>
                 </div>
             </div>
         </div>
@@ -475,12 +475,12 @@ function updateProjectSelects() {
     const timerSelect = document.getElementById('timerProject');
     const filterSelect = document.getElementById('filterProject');
     
-    const options = '<option value=\"\">Selecione um projeto</option>' +
-        state.projects.map(p => `<option value=\"${p.id}\">${escapeHtml(p.name)}</option>`).join('');
+    const options = '<option value="">Selecione um projeto</option>' +
+        state.projects.map(p => `<option value="${p.id}">${escapeHtml(p.name)}</option>`).join('');
     
     timerSelect.innerHTML = options;
-    filterSelect.innerHTML = '<option value=\"\">Todos os projetos</option>' +
-        state.projects.map(p => `<option value=\"${p.id}\">${escapeHtml(p.name)}</option>`).join('');
+    filterSelect.innerHTML = '<option value="">Todos os projetos</option>' +
+        state.projects.map(p => `<option value="${p.id}">${escapeHtml(p.name)}</option>`).join('');
 }
 
 function openProjectModal(projectId = null) {
@@ -598,8 +598,8 @@ function loadTasksForSelect(projectId) {
         .then(data => {
             if (data.success) {
                 const taskSelect = document.getElementById('timerTask');
-                taskSelect.innerHTML = '<option value=\"\">Selecione uma tarefa</option>' +
-                    data.tasks.map(t => `<option value=\"${t.id}\">${escapeHtml(t.name)}</option>`).join('');
+                taskSelect.innerHTML = '<option value="">Selecione uma tarefa</option>' +
+                    data.tasks.map(t => `<option value="${t.id}">${escapeHtml(t.name)}</option>`).join('');
             }
         })
         .catch(error => {
@@ -611,18 +611,18 @@ function renderTasks(tasks) {
     const container = document.getElementById('tasksList');
     
     if (tasks.length === 0) {
-        container.innerHTML = '<p style=\"text-align: center; color: rgba(255,255,255,0.5); padding: 20px;\">Nenhuma tarefa criada</p>';
+        container.innerHTML = '<p style="text-align: center; color: rgba(255,255,255,0.5); padding: 20px;">Nenhuma tarefa criada</p>';
         return;
     }
     
     container.innerHTML = tasks.map(task => `
-        <div class=\"task-item\">
+        <div class="task-item">
             <div>
-                <div class=\"task-name\">${escapeHtml(task.name)}</div>
-                <div class=\"task-meta\">${task.entry_count} registros • ${task.duration_formatted}</div>
+                <div class="task-name">${escapeHtml(task.name)}</div>
+                <div class="task-meta">${task.entry_count} registros • ${task.duration_formatted}</div>
             </div>
-            <button class=\"btn btn-sm btn-icon btn-danger\" onclick=\"deleteTask('${task.id}')\">
-                <i class=\"fas fa-trash\"></i>
+            <button class="btn btn-sm btn-icon btn-danger" onclick="deleteTask('${task.id}')">
+                <i class="fas fa-trash"></i>
             </button>
         </div>
     `).join('');
@@ -714,8 +714,8 @@ function renderEntries() {
     
     if (state.entries.length === 0) {
         container.innerHTML = `
-            <div class=\"empty-state\">
-                <i class=\"fas fa-clock\"></i>
+            <div class="empty-state">
+                <i class="fas fa-clock"></i>
                 <h3>Nenhum registro encontrado</h3>
                 <p>Inicie o cronômetro para começar a rastrear tempo</p>
             </div>
@@ -729,21 +729,21 @@ function renderEntries() {
         const timeStr = date.toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'});
         
         return `
-            <div class=\"entry-item\">
-                <div class=\"entry-color\" style=\"background: ${entry.project_color || '#7B61FF'};\"></div>
-                <div class=\"entry-details\">
-                    <div class=\"entry-description\">${entry.description || 'Sem descrição'}</div>
-                    <div class=\"entry-meta\">
-                        ${entry.project_name ? '<span><i class=\"fas fa-folder\"></i> ' + escapeHtml(entry.project_name) + '</span>' : ''}
-                        ${entry.task_name ? '<span><i class=\"fas fa-tasks\"></i> ' + escapeHtml(entry.task_name) + '</span>' : ''}
-                        <span><i class=\"fas fa-calendar\"></i> ${dateStr}</span>
-                        <span><i class=\"fas fa-clock\"></i> ${timeStr}</span>
+            <div class="entry-item">
+                <div class="entry-color" style="background: ${entry.project_color || '#7B61FF'};"></div>
+                <div class="entry-details">
+                    <div class="entry-description">${entry.description || 'Sem descrição'}</div>
+                    <div class="entry-meta">
+                        ${entry.project_name ? '<span><i class="fas fa-folder"></i> ' + escapeHtml(entry.project_name) + '</span>' : ''}
+                        ${entry.task_name ? '<span><i class="fas fa-tasks"></i> ' + escapeHtml(entry.task_name) + '</span>' : ''}
+                        <span><i class="fas fa-calendar"></i> ${dateStr}</span>
+                        <span><i class="fas fa-clock"></i> ${timeStr}</span>
                     </div>
                 </div>
-                <div class=\"entry-duration\">${entry.duration_formatted}</div>
-                <div class=\"entry-actions\">
-                    <button class=\"btn btn-sm btn-icon btn-danger\" onclick=\"deleteEntry('${entry.id}')\">
-                        <i class=\"fas fa-trash\"></i>
+                <div class="entry-duration">${entry.duration_formatted}</div>
+                <div class="entry-actions">
+                    <button class="btn btn-sm btn-icon btn-danger" onclick="deleteEntry('${entry.id}')">
+                        <i class="fas fa-trash"></i>
                     </button>
                 </div>
             </div>
@@ -793,10 +793,10 @@ function escapeHtml(text) {
         '&': '&amp;',
         '<': '&lt;',
         '>': '&gt;',
-        '\"': '&quot;',
-        \"'\": '&#039;'
+        '"': '&quot;',
+        '\'': '&#039;'
     };
-    return text.replace(/[&<>\"']/g, m => map[m]);
+    return text.replace(/[&<>"']/g, m => map[m]);
 }
 
 function showNotification(message, type = 'info') {
