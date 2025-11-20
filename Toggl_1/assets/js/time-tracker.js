@@ -656,7 +656,7 @@ function deleteTask(taskId) {
 // ===== ENTRIES =====
 function loadEntries() {
     const projectFilter = document.getElementById('filterProject').value;
-    let url = '/Toggl_1/api.php?action=entry_list&limit=50';
+    let url = API_URL + '?action=entry_list&limit=50';
     
     if (projectFilter) {
         url += '&project_id=' + projectFilter;
