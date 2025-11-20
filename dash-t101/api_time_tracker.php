@@ -50,6 +50,8 @@ try {
     switch ($action) {
         // ===== PROJETOS (usando dash_projects) =====
         case 'project_list':
+            error_log("Carregando lista de projetos para user_id: " . $user_id);
+            
             $stmt = $pdo->prepare("
                 SELECT 
                     id,
@@ -63,6 +65,8 @@ try {
             ");
             $stmt->execute([$user_id]);
             $projects = $stmt->fetchAll();
+            
+            error_log("Projetos encontrados: " . count($projects));
             
             // Calcular estatísticas de cada projeto
             foreach ($projects as &$project) {
