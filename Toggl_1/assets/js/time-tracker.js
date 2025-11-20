@@ -3,6 +3,9 @@
  * Sistema de rastreamento de tempo
  */
 
+// Configuração da API
+const API_URL = window.API_URL || '/dash-t101/api_time_tracker.php';
+
 // Estado Global
 const state = {
     runningEntry: null,
