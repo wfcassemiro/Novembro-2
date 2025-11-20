@@ -19,15 +19,34 @@ const state = {
 
 // Inicialização
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('8. DOMContentLoaded disparado - iniciando app');
     initializeApp();
 });
 
 function initializeApp() {
-    loadProjects();
-    loadEntries();
-    checkRunningTimer();
-    setupEventListeners();
-    startTimerUpdate();
+    console.log('9. initializeApp() chamado');
+    console.log('   - API_URL:', API_URL);
+    
+    try {
+        console.log('10. Carregando projetos...');
+        loadProjects();
+        
+        console.log('11. Carregando entries...');
+        loadEntries();
+        
+        console.log('12. Verificando timer ativo...');
+        checkRunningTimer();
+        
+        console.log('13. Configurando event listeners...');
+        setupEventListeners();
+        
+        console.log('14. Iniciando atualização do timer...');
+        startTimerUpdate();
+        
+        console.log('15. Inicialização completa!');
+    } catch (error) {
+        console.error('ERRO na inicialização:', error);
+    }
 }
 
 // ===== EVENT LISTENERS =====
