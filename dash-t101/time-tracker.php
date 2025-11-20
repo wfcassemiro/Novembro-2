@@ -5,10 +5,37 @@
  * INTEGRADO com dash_projects existente
  */
 
-require_once __DIR__ . '/includes/auth_check.php';
-require_once __DIR__ . '/includes/functions.php';
+// DEBUG: Ativar exibição de erros
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+echo "<!-- DEBUG: Iniciando time-tracker.php -->\n";
+
+// Verificar se os arquivos necessários existem
+$auth_check_file = __DIR__ . '/includes/auth_check.php';
+$functions_file = __DIR__ . '/includes/functions.php';
+
+echo "<!-- DEBUG: Verificando arquivos -->\n";
+echo "<!-- DEBUG: auth_check existe? " . (file_exists($auth_check_file) ? 'SIM' : 'NÃO') . " -->\n";
+echo "<!-- DEBUG: functions existe? " . (file_exists($functions_file) ? 'SIM' : 'NÃO') . " -->\n";
+
+require_once $auth_check_file;
+
+// Verificar se functions.php tem as funções necessárias
+if (file_exists($functions_file)) {
+    require_once $functions_file;
+    echo "<!-- DEBUG: functions.php incluído -->\n";
+} else {
+    echo "<!-- DEBUG: ERRO - functions.php NÃO ENCONTRADO -->\n";
+}
+
+// Verificar se as funções necessárias existem
+echo "<!-- DEBUG: generateUUID existe? " . (function_exists('generateUUID') ? 'SIM' : 'NÃO') . " -->\n";
+echo "<!-- DEBUG: formatDuration existe? " . (function_exists('formatDuration') ? 'SIM' : 'NÃO') . " -->\n";
+echo "<!-- DEBUG: jsonResponse existe? " . (function_exists('jsonResponse') ? 'SIM' : 'NÃO') . " -->\n";
 
 $page_title = 'Time Tracker - Rastreamento de Tempo';
+echo "<!-- DEBUG: Page title definido: " . $page_title . " -->\n";
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
