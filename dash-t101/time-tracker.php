@@ -246,7 +246,7 @@ window.addEventListener('error', function(e) {
     console.error('ERRO CAPTURADO:', e.message, 'em', e.filename, 'linha', e.lineno);
 });
 </script>
-<script src="/vision/assets/js/time-tracker.js"></script>
+<script src="/vision/assets/js/time-tracker.js?v=<?php echo time(); ?>"></script>
 <script>
 console.log('7. time-tracker.js carregado (se não houver erros acima)');
 </script>
