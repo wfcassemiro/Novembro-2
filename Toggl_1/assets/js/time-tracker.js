@@ -314,9 +314,60 @@ function resetTimerUI() {
     document.getElementById('stopButton').style.display = 'none';
 }
 
+// ===== QUICK PROJECT MODAL =====
+function openQuickProjectModal() {
+    document.getElementById('quickProjectModal').classList.add('active');
+    document.getElementById('quickProjectName').focus();
+}
+
+function closeQuickProjectModal() {
+    document.getElementById('quickProjectModal').classList.remove('active');
+    document.getElementById('quickProjectForm').reset();
+}
+
+function createQuickProject(event) {
+    event.preventDefault();
+    
+    const name = document.getElementById('quickProjectName').value.trim();
+    const client = document.getElementById('quickClientName').value.trim();
+    
+    if (!name) {
+        alert('Nome do projeto é obrigatório');
+        return;
+    }
+    
+    const formData = new FormData();
+    formData.append('action', 'project_create_quick');
+    formData.append('name', name);
+    formData.append('client', client);
+    
+    fetch(API_URL, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification(data.message, 'success');
+            closeQuickProjectModal();
+            loadProjects();
+            // Selecionar o projeto criado
+            setTimeout(() => {
+                document.getElementById('timerProject').value = data.project_id;
+            }, 500);
+        } else {
+            showNotification(data.error || 'Erro ao criar projeto', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification('Erro ao criar projeto', 'error');
+    });
+}
+
 // ===== PROJECTS =====
 function loadProjects() {
-    fetch('/Toggl_1/api.php?action=project_list')
+    fetch(API_URL + '?action=project_list')
         .then(response => response.json())
         .then(data => {
             if (data.success) {
