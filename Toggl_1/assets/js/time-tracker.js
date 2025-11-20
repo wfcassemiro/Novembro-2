@@ -546,7 +546,7 @@ function closeTasksModal() {
 }
 
 function loadTasks(projectId) {
-    fetch(`/Toggl_1/api.php?action=task_list&project_id=${projectId}`)
+    fetch(`${API_URL}?action=task_list&project_id=${projectId}`)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
@@ -559,7 +559,7 @@ function loadTasks(projectId) {
 }
 
 function loadTasksForSelect(projectId) {
-    fetch(`/Toggl_1/api.php?action=task_list&project_id=${projectId}`)
+    fetch(`${API_URL}?action=task_list&project_id=${projectId}`)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
