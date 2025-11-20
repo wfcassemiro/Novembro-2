@@ -211,7 +211,7 @@ function stopTimer() {
 }
 
 function checkRunningTimer() {
-    fetch('/Toggl_1/api.php?action=entry_running')
+    fetch(API_URL + '?action=entry_running')
         .then(response => response.json())
         .then(data => {
             if (data.success && data.entry) {
