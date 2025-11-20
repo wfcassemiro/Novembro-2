@@ -4,14 +4,47 @@
  * Integrado com dash_projects existente
  */
 
-require_once __DIR__ . '/includes/auth_check.php';
-require_once __DIR__ . '/includes/functions.php';
-require_once __DIR__ . '/config/database.php';
+// DEBUG: Log de início
+error_log("===== API TIME TRACKER CHAMADA =====");
+error_log("Método: " . $_SERVER['REQUEST_METHOD']);
+error_log("URI: " . $_SERVER['REQUEST_URI']);
+
+try {
+    require_once __DIR__ . '/includes/auth_check.php';
+    error_log("auth_check.php incluído com sucesso");
+} catch (Exception $e) {
+    error_log("ERRO ao incluir auth_check.php: " . $e->getMessage());
+    die(json_encode(['success' => false, 'error' => 'Erro de autenticação: ' . $e->getMessage()]));
+}
+
+try {
+    require_once __DIR__ . '/includes/functions.php';
+    error_log("functions.php incluído com sucesso");
+} catch (Exception $e) {
+    error_log("ERRO ao incluir functions.php: " . $e->getMessage());
+    die(json_encode(['success' => false, 'error' => 'Erro ao carregar funções: ' . $e->getMessage()]));
+}
+
+try {
+    require_once __DIR__ . '/config/database.php';
+    error_log("database.php incluído com sucesso");
+} catch (Exception $e) {
+    error_log("ERRO ao incluir database.php: " . $e->getMessage());
+    die(json_encode(['success' => false, 'error' => 'Erro de conexão: ' . $e->getMessage()]));
+}
 
 header('Content-Type: application/json; charset=UTF-8');
 
 $action = $_POST['action'] ?? $_GET['action'] ?? '';
-$user_id = $_SESSION['user_id'];
+$user_id = $_SESSION['user_id'] ?? null;
+
+error_log("Action: " . $action);
+error_log("User ID: " . ($user_id ?? 'NÃO DEFINIDO'));
+
+if (!$user_id) {
+    error_log("ERRO: User ID não definido na sessão");
+    die(json_encode(['success' => false, 'error' => 'Usuário não autenticado']));
+}
 
 try {
     switch ($action) {
