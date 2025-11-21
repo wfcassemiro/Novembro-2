@@ -267,10 +267,12 @@ $page_title = 'Time Tracker - Rastreamento de Tempo';
 
 <!-- Configuração da API -->
 <script>
-// TEMPORÁRIO: Usar versão debug da API
-window.API_URL = '/dash-t101/api_time_tracker_debug.php';
-console.log('[TT PHP] API_URL configurado (DEBUG):', window.API_URL);
-console.log('[TT PHP] Logs serão salvos em: /tmp/time_tracker_debug.log');
+// ⚠️ TEMPORÁRIO: Usar versão SEM AUTENTICAÇÃO para testes
+window.API_URL = '/dash-t101/api_time_tracker_NO_AUTH.php';
+console.log('[TT PHP] API_URL configurado (NO AUTH - TESTE):', window.API_URL);
+console.log('[TT PHP] ⚠️ Esta versão ignora autenticação - use apenas para testes!');
+console.log('[TT PHP] Para testar com debug: use api_time_tracker_debug.php');
+console.log('[TT PHP] Para produção: use api_time_tracker.php');
 </script>
 
 <!-- JS Principal do Time Tracker -->
