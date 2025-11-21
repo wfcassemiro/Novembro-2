@@ -453,18 +453,33 @@ function loadProjects() {
     fetch(url)
         .then(response => {
             console.log('[TT] loadProjects() - status:', response.status, response.statusText);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            
             return response.text();
         })
         .then(text => {
-            console.log('[TT] loadProjects() - corpo bruto:');
-            console.log(text);
+            console.log('[TT] loadProjects() - corpo bruto (primeiros 500 chars):');
+            console.log(text.substring(0, 500));
+
+            // Verificar se é HTML (erro 404/500)
+            if (text.trim().startsWith('<!DOCTYPE') || text.trim().startsWith('<html')) {
+                console.error('[TT] loadProjects() - Resposta é HTML, não JSON!');
+                console.error('[TT] Provavelmente erro 404 ou erro de servidor');
+                console.error('[TT] Corpo completo:', text);
+                showNotification('API retornou HTML em vez de JSON. Verifique o console.', 'error');
+                return;
+            }
 
             let data;
             try {
                 data = JSON.parse(text);
             } catch (e) {
                 console.error('[TT] loadProjects() JSON.parse ERRO:', e.message);
-                alert('Erro ao interpretar resposta da API de projetos. Veja o console.');
+                console.error('[TT] Texto que causou erro:', text);
+                showNotification('Erro ao interpretar resposta JSON. Verifique o console.', 'error');
                 return;
             }
 
@@ -474,15 +489,22 @@ function loadProjects() {
                 const projects = data.projects || (data.data && data.data.projects) || [];
                 state.projects = projects;
                 console.log('[TT] loadProjects() - projetos recebidos:', projects.length);
+                
+                if (projects.length === 0) {
+                    console.warn('[TT] Nenhum projeto encontrado');
+                    showNotification('Nenhum projeto encontrado. Crie um novo!', 'info');
+                }
+                
                 updateProjectSelects();
             } else {
-                console.error('[TT] loadProjects() - API erro:', data.error);
-                alert('Erro ao carregar projetos: ' + (data.error || 'Erro desconhecido'));
+                console.error('[TT] loadProjects() - API retornou sucesso=false');
+                console.error('[TT] Erro da API:', data.error);
+                showNotification('Erro da API: ' + (data.error || 'Erro desconhecido'), 'error');
             }
         })
         .catch(error => {
             console.error('[TT] loadProjects() - ERRO fetch:', error);
-            alert('Erro de conexao ao carregar projetos: ' + error.message);
+            showNotification('Erro de conexão: ' + error.message, 'error');
         });
 }
 
