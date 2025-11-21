@@ -791,9 +791,29 @@ function escapeHtml(text) {
 
 function showNotification(message, type) {
     type = type || 'info';
-    const icon = type === 'success' ? '[OK]' : type === 'error' ? '[ERRO]' : '[INFO]';
+    const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : type === 'warning' ? '⚠️' : 'ℹ️';
     console.log('[' + type.toUpperCase() + '] ' + message);
-    if (type === 'error') {
-        alert(icon + ' ' + message);
-    }
+    
+    // Criar toast notification
+    const toast = document.createElement('div');
+    toast.className = 'toast-notification toast-' + type;
+    toast.innerHTML = '<span class="toast-icon">' + icon + '</span><span class="toast-message">' + escapeHtml(message) + '</span>';
+    
+    // Adicionar ao body
+    document.body.appendChild(toast);
+    
+    // Animar entrada
+    setTimeout(() => toast.classList.add('show'), 10);
+    
+    // Remover após 5 segundos
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 5000);
+    
+    // Permitir fechar clicando
+    toast.addEventListener('click', () => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    });
 }
