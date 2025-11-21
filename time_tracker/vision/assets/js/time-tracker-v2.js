@@ -404,18 +404,32 @@ function createQuickProject(event) {
     })
     .then(response => {
         console.log('[TT] createQuickProject() status:', response.status, response.statusText);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
         return response.text();
     })
     .then(text => {
-        console.log('[TT] createQuickProject() corpo bruto:');
-        console.log(text);
+        console.log('[TT] createQuickProject() corpo bruto (primeiros 500 chars):');
+        console.log(text.substring(0, 500));
+
+        // Verificar se é HTML
+        if (text.trim().startsWith('<!DOCTYPE') || text.trim().startsWith('<html')) {
+            console.error('[TT] createQuickProject() - Resposta é HTML!');
+            console.error('[TT] Corpo completo:', text);
+            showNotification('API retornou HTML. Verifique o console.', 'error');
+            return;
+        }
 
         let data;
         try {
             data = JSON.parse(text);
         } catch (e) {
             console.error('[TT] createQuickProject() JSON.parse ERRO:', e.message);
-            alert('Erro ao interpretar resposta da API ao criar projeto. Veja console.');
+            console.error('[TT] Texto que causou erro:', text);
+            showNotification('Erro ao interpretar resposta JSON. Verifique o console.', 'error');
             return;
         }
 
@@ -423,14 +437,18 @@ function createQuickProject(event) {
 
         if (data.success) {
             const projectId = data.project_id || (data.data && data.data.project_id);
-            showNotification(data.message || 'Projeto criado', 'success');
+            showNotification(data.message || 'Projeto criado com sucesso!', 'success');
             closeQuickProjectModal();
             loadProjects();
 
             if (projectId) {
                 setTimeout(() => {
                     console.log('[TT] createQuickProject() selecionando projeto:', projectId);
-                    document.getElementById('timerProject').value = projectId;
+                    const selectEl = document.getElementById('timerProject');
+                    if (selectEl) {
+                        selectEl.value = projectId;
+                        console.log('[TT] Projeto selecionado automaticamente');
+                    }
                 }, 500);
             } else {
                 console.warn('[TT] createQuickProject() sucesso sem project_id');
@@ -441,7 +459,7 @@ function createQuickProject(event) {
     })
     .catch(error => {
         console.error('[TT] createQuickProject() ERRO:', error);
-        showNotification('Erro ao criar projeto', 'error');
+        showNotification('Erro de conexão: ' + error.message, 'error');
     });
 }
 
